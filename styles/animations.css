@@ -1,0 +1,74 @@
+/* Keyframe Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+/* Transition Classes */
+.fade-enter {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.slide-enter {
+    animation: slideDown 0.3s ease forwards;
+}
+
+.slide-exit {
+    animation: slideOut 0.3s ease forwards;
+}
+
+/* Smooth Transitions */
+* {
+    transition-property:
+        color, background-color, border-color, text-decoration-color, fill,
+        stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 0.15s;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .header {
+        padding: 1rem;
+    }
+
+    .main-content {
+        padding: 1rem;
+    }
+
+    .add-text {
+        display: none;
+    }
+
+    .filter-tabs {
+        flex-wrap: wrap;
+    }
+}
