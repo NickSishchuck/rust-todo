@@ -13,33 +13,27 @@ pub fn app() -> Html {
     // Load todos from localStorage on mount
     {
         let todos = todos.clone();
-        use_effect_with_deps(
-            move |_| {
-                if let Ok(Some(storage)) = web_sys::window().unwrap().local_storage() {
-                    if let Ok(Some(stored)) = storage.get_item("todos") {
-                        if let Ok(loaded_todos) = serde_json::from_str::<Vec<Todo>>(&stored) {
-                            todos.set(loaded_todos);
-                        }
+        use_effect_with((), move |_| {
+            if let Ok(Some(storage)) = web_sys::window().unwrap().local_storage() {
+                if let Ok(Some(stored)) = storage.get_item("todos") {
+                    if let Ok(loaded_todos) = serde_json::from_str::<Vec<Todo>>(&stored) {
+                        todos.set(loaded_todos);
                     }
                 }
-                || ()
-            },
-            (),
-        );
+            }
+            || ()
+        });
     }
 
     // Save todos to localStorage whenever they change
     {
         let todos_dep = todos.clone();
-        use_effect_with_deps(
-            move |todos| {
-                if let Ok(Some(storage)) = web_sys::window().unwrap().local_storage() {
-                    let _ = storage.set_item("todos", &serde_json::to_string(&**todos).unwrap());
-                }
-                || ()
-            },
-            todos_dep,
-        );
+        use_effect_with(todos_dep, move |todos| {
+            if let Ok(Some(storage)) = web_sys::window().unwrap().local_storage() {
+                let _ = storage.set_item("todos", &serde_json::to_string(&**todos).unwrap());
+            }
+            || ()
+        });
     }
 
     let add_todo = {

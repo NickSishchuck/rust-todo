@@ -1,4 +1,3 @@
-use wasm_bindgen::JsCast;
 use web_sys::{Event, HtmlInputElement, KeyboardEvent, SubmitEvent};
 use yew::prelude::*;
 
@@ -16,15 +15,12 @@ pub fn todo_input(props: &TodoInputProps) -> Html {
     // Focus input on mount
     {
         let input_ref = input_ref.clone();
-        use_effect_with_deps(
-            move |_| {
-                if let Some(input) = input_ref.cast::<HtmlInputElement>() {
-                    let _ = input.focus();
-                }
-                || ()
-            },
-            (),
-        );
+        use_effect_with((), move |_| {
+            if let Some(input) = input_ref.cast::<HtmlInputElement>() {
+                let _ = input.focus();
+            }
+            || ()
+        });
     }
 
     let on_change = {
